@@ -14,6 +14,8 @@ services:
       - DOCKER_MULTI_NODE_CLUSTER=false
       - LOW_CARDINAL_EXCEPTION_GROUPING=false
     ports:
-      - "4317:4317"     # OTLP gRPC receiver
-      - "4318:4318"     # OTLP HTTP receiver
+      # Keep unauthenticated OTLP receivers local by default. Set OTEL_BIND_HOST
+      # explicitly when a protected network endpoint is required.
+      - "${OTEL_BIND_HOST:-127.0.0.1}:4317:4317"     # OTLP gRPC receiver
+      - "${OTEL_BIND_HOST:-127.0.0.1}:4318:4318"     # OTLP HTTP receiver
     restart: on-failure
